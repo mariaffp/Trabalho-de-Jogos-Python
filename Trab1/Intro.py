@@ -7,13 +7,12 @@ pygame.font.init()
 
 
 font = font = pygame.font.Font(None, 50)
-Nome = "Seu Nome"
-rect =  (260, 100, 175, 35)
+Nome = "Maria Fernanda"
+rect =  (260, 100, 290, 35)
 
-random.seed(Nome)
-x, y =  random.randint(0, 500), random.randint(0, 400)
-
-print(y)
+#random.seed(Nome)
+#x, y =  random.randint(0, 500), random.randint(0, 400)
+#print(y)
 
 # Cria a janela
 WIDTH   =  800; HEIGHT =  600
@@ -27,5 +26,5 @@ while True:
         # Desenha
         screen.fill((30, 30, 30))
         pygame.draw.rect(screen, (255,255,255), rect)
-        screen.blit(font.render(Nome, True, (0,0,0)), (x, y))
+        screen.blit(font.render(Nome, True, (125,33,129)), (260, 100))
         pygame.display.flip()
