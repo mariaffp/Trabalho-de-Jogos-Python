@@ -26,13 +26,14 @@ def rotate(pos, angle, axis = (0,0)):
 
 class Bullet (ABC):
 
-    def __init__(self, pos, angle = 0, radius = 16, life_time = None):
+    def __init__(self, pos, angle = 0, radius = 6, life_time = None,  velocity = (0, 0)):
         self.pos = pos
         self.origin = pygame.Vector2(pos)
         self.life_time = life_time
         self.angle = angle
         self.elapsed = 0
         self.radius = radius
+        self.velocity = pygame.Vector2(velocity)
 
         self.sprite = colored_sprite ((255, 0, 0), (self.radius*2, self.radius*2))
 
@@ -42,10 +43,16 @@ class Bullet (ABC):
         if self.life_time and self.elapsed >= self.life_time:
                 self.destroy()       
 
-        self.pos = rotate(self.move(), self.angle)+self.origin
+        #self.pos = rotate(self.move(), self.angle)+self.origin
+        self.pos += self.move() * dt
 
     def draw(self, screen):
-        screen.blit(self.sprite, self.pos)
+        screen.blit(self.sprite,
+            (
+                int(self.pos.x - self.radius),
+                int(self.pos.y - self.radius)
+            )
+        )
 
     @abstractmethod
     def move(self):
@@ -55,7 +62,7 @@ class Bullet (ABC):
         EventHandler().notify("DestroyObj", self) # avisa o mundo que saiu da tela
 
 class sinBullet (Bullet):
-    # exemplo, façam algo mais rebuscado
 
+    # agora o projétil segue em linha reta
     def move(self):
-        return pygame.Vector2(self.elapsed, math.sin(self.elapsed/50)*50) 
+        return self.velocity
