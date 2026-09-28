@@ -2,10 +2,12 @@ import pygame
 
 class Polygon:
     HANDLE_RADIUS = 8
+    debug = False
 
     def __init__(self, points):
         self.points = list(points)
         self.selected_vertex = None
+        self.color = (100, 180, 100)
         self.update_geometry()
 
     # ---------------------------------------------------------
@@ -213,26 +215,32 @@ class Polygon:
     def draw(self, screen, highlight=None):
 
         # Bounding box
-        pygame.draw.rect(
-            screen,
-            (80, 80, 80),
-            self.bounding_box,
-            2
-        )
+        if Polygon.debug:
+            pygame.draw.rect(
+                screen,
+                (80, 80, 80),
+                self.bounding_box,
+                2
+            )
 
         # Original polygon
         pygame.draw.polygon(
             screen,
-            (100, 180, 100),
+            self.color,
             self.points
         )
 
+        borda = tuple(min(255, c + 70) for c in self.color)
+
         pygame.draw.polygon(
             screen,
-            (255, 255, 255),
+            borda,
             self.points,
             2
         )
+
+        if not Polygon.debug:
+            return
 
         # Decomposition lines
         for a, b in self.decomposition_edges:
@@ -262,7 +270,7 @@ class Polygon:
         for i, p in enumerate(self.points):
 
             color = (
-                (255, 255, 0)
+                (128, 0, 128)
                 if i == self.selected_vertex
                 else (255, 100, 100)
             )

@@ -1,0 +1,15 @@
+#fiz um arquivo pra eventos isoladamente
+class EventBus:
+    def __init__(self):
+        self.listeners = {}
+ 
+    def on(self, event_name, callback):
+        self.listeners.setdefault(event_name, []).append(callback)
+ 
+    def emit(self, event_name, **data):
+        for callback in self.listeners.get(event_name, []):
+            callback(**data)
+ 
+ 
+#instância única usada pelo jogo
+event_bus = EventBus()
